@@ -13,6 +13,7 @@ public class GamePanel extends JPanel{
 	public Image map;
 	public GameWindow gameWin;
 	public BufferedImage buffImg;
+	public final byte SCALE = 2;
 	
 	public GamePanel(GameWindow _gameWin) {
 		super();
@@ -36,7 +37,11 @@ public class GamePanel extends JPanel{
 	
 	protected void paintComponent(Graphics g){
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.drawImage(buffImg.getSubimage(0, 0, 100, 200),	0, 0, gameWin);
+		BufferedImage buffer = buffImg.getSubimage(0, 0, 960, 540);
+		
+		g2d.scale(SCALE, SCALE);
+			
+		g2d.drawImage(buffer,	0, 0, gameWin);
 		g2d.dispose();
 		g.dispose();
 	}
