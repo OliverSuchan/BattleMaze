@@ -16,11 +16,11 @@ public class GameController {
 	public boolean wFlag = false, aFlag = false, sFlag = false, dFlag = false;
 	public boolean upDateFlage = false;
 	public boolean painterFlag = false;
-	
+
 	public GameController() {
-		me = new Player(10, 10);
-		gameWin = new GameWindow("Battle Maze", this);		
-		
+		me = new Player(70, 70);
+		gameWin = new GameWindow("Battle Maze", this);
+
 		upDateTimer = new Timer(20, new ActionListener() {
 
 			@Override
@@ -28,31 +28,36 @@ public class GameController {
 				upDateAction(e);
 			}
 		});
-		
+
 		painterTimer = new Timer(10, new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				painterAction(e);				
+				painterAction(e);
 			}
 		});
-		
+
 		upDateTimer.start();
 		upDateFlage = true;
+		painterTimer.start();
+		painterFlag = true;
 	}
-	
-	public void painterAction(ActionEvent evnt){
+
+	public void painterAction(ActionEvent evnt) {
 		gameWin.repaint();
 	}
 
 	public void upDateAction(ActionEvent evnt) {
 		if (aFlag) {
 			me.left();
-		}else if (dFlag) {
+		}
+		if (dFlag) {
 			me.right();
-		}else if (wFlag) {
+		}
+		if (wFlag) {
 			me.up();
-		}else if (sFlag) {
+		}
+		if (sFlag) {
 			me.down();
 		}
 	}

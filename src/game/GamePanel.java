@@ -34,6 +34,7 @@ public class GamePanel extends JPanel{
 		Graphics2D g = buffImg.createGraphics();
 		g.drawImage(map, 0, 0, gameWin);
 		g.dispose();
+		me.setMapImg(buffImg);
 	
 	}
 	
@@ -44,6 +45,7 @@ public class GamePanel extends JPanel{
 		
 		g2d.scale(SCALE, SCALE);			
 		g2d.drawImage(buffer,	0, 0, gameWin);
+		g2d.setColor(me.myColor);
 		g2d.fill(me.dot);
 		g2d.dispose();
 		g.dispose();

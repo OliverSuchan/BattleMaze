@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
@@ -26,7 +28,11 @@ public class GameWindow extends JFrame{
 	public GameWindow(String title, GameController _gameCon) {
 		super(title);
 		this.setLayout(null);
-		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);		
+		this.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent w) {
+				closeMethode();
+			}
+		});		
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		int frameWidth = d.width;
 		int frameHeight = d.height;
@@ -66,6 +72,12 @@ public class GameWindow extends JFrame{
 		
 		
 		this.setVisible(true);
+	}
+	
+	public void closeMethode(){
+		gameCon.painterTimer.stop();
+		gameCon.upDateTimer.stop();
+		this.dispose();
 	}
 	
 	
