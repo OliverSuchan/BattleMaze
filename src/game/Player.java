@@ -1,24 +1,26 @@
 package game;
 
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 
 public class Player {
 
 	private double xPos, yPos, stepSize = 2.0;
-	private int d = 6;
+	private int d = 12;
 	public final int SCALE = 1;
 
 	public Ellipse2D.Double dot;
 	public Color myColor;
 	public BufferedImage map;
+	public int bufferedImg_xPos = 20, bufferedImg_yPos = 20, bufferedImg_maxWidth, bufferedImg_maxHeight;
 
-	public Player(double _x, double _y) {
-		xPos = _x;
-		yPos = _y;
+	public Player() {
+		xPos = Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2;
+		yPos = Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 2;
 		myColor = Color.GREEN;
-		dot = new Ellipse2D.Double(xPos * SCALE, yPos * SCALE, d, d);
+		dot = new Ellipse2D.Double(xPos, yPos, d, d);
 	}
 
 	public boolean checkCollision(double newX, double newY) {
@@ -31,14 +33,14 @@ public class Player {
 			try {
 				checkPoint = new Color(map.getRGB(
 						(int) (x + Math.cos(Math.toRadians(i * 45) * (d / 2))),
-						(int) (y + Math.sin(Math.toRadians(i * 45)) * (d / 2))));
+						(int) (y + Math.sin(Math.toRadians(i * 45) * (d / 2)))));
 				retValue += checkPoint.getRed() + checkPoint.getGreen() + checkPoint.getBlue();
 			} catch (Exception e) {
 				retValue += 1;
 			}
 		}
 		
-		System.out.println(retValue);
+		//System.out.println(retValue);
 		
 		return (retValue == 0) ? true : false;
 	}
@@ -49,25 +51,39 @@ public class Player {
 
 	public void up() {
 		if (checkCollision(xPos, yPos - stepSize)) {
-			this.setyPos(yPos - stepSize);
+			if(bufferedImg_yPos - stepSize < 0)
+				bufferedImg_yPos += 0 - bufferedImg_yPos;
+			else
+				bufferedImg_yPos -= stepSize;
 		}
 	}
 
 	public void down() {
+
 		if (checkCollision(xPos, yPos + stepSize)) {
-			this.setyPos(yPos + stepSize);
+			if(bufferedImg_yPos + stepSize > bufferedImg_maxHeight - 540)
+				bufferedImg_yPos += bufferedImg_maxHeight - 540 - bufferedImg_yPos;
+			else
+				bufferedImg_yPos += stepSize;
 		}
 	}
 
 	public void left() {
+		
 		if (checkCollision(xPos - stepSize, yPos)) {
-			this.setxPos(xPos - stepSize);
+			if(bufferedImg_xPos - stepSize < 0)
+				bufferedImg_xPos += 0 - bufferedImg_xPos;
+			else
+				bufferedImg_xPos -= stepSize;
 		}
 	}
 
 	public void right() {
 		if (checkCollision(xPos + stepSize, yPos)) {
-			this.setxPos(xPos + stepSize);
+			if(bufferedImg_xPos + stepSize > bufferedImg_maxWidth - 960)
+				bufferedImg_xPos += bufferedImg_maxWidth - 960 - bufferedImg_xPos;
+			else
+				bufferedImg_xPos += stepSize;
 		}
 	}
 
@@ -75,17 +91,8 @@ public class Player {
 		return xPos;
 	}
 
-	public void setxPos(double xPos) {
-		this.xPos = xPos;
-		dot = new Ellipse2D.Double(xPos * SCALE, yPos, d, d);
-	}
 
 	public double getyPos() {
 		return yPos;
-	}
-
-	public void setyPos(double yPos) {
-		this.yPos = yPos;
-		dot = new Ellipse2D.Double(xPos, yPos * SCALE, d, d);
 	}
 }

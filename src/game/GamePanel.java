@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
@@ -35,16 +37,20 @@ public class GamePanel extends JPanel{
 		g.drawImage(map, 0, 0, gameWin);
 		g.dispose();
 		me.setMapImg(buffImg);
-	
+		me.bufferedImg_maxWidth = mapWidth;
+		me.bufferedImg_maxHeight = mapHeight;
 	}
 	
 	protected void paintComponent(Graphics g){
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		BufferedImage buffer = buffImg.getSubimage(0, 0, 960, 540);
+		BufferedImage buffer = buffImg.getSubimage(me.bufferedImg_xPos, me.bufferedImg_yPos, 960, 540);
 		
-		g2d.scale(SCALE, SCALE);			
-		g2d.drawImage(buffer,	0, 0, gameWin);
+		AffineTransform tx = new AffineTransform();
+	    tx.scale(SCALE, SCALE);
+	    buffer = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR).filter(buffer, null);
+
+		g2d.drawImage(buffer, 0, 0, gameWin);
 		g2d.setColor(me.myColor);
 		g2d.fill(me.dot);
 		g2d.dispose();

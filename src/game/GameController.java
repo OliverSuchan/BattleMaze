@@ -18,7 +18,7 @@ public class GameController {
 	public boolean painterFlag = false;
 
 	public GameController() {
-		me = new Player(70, 70);
+		me = new Player();
 		gameWin = new GameWindow("Battle Maze", this);
 
 		upDateTimer = new Timer(20, new ActionListener() {
